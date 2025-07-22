@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  order-service:
+    build:
+      context: .
+      dockerfile: ./apps/order-service/Dockerfile.dev
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: pnpm run start:order:hot
+
+  invoice-service:
+    build:
+      context: .
+      dockerfile: ./apps/invoice-service/Dockerfile.dev
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: pnpm run start:invoice:hot

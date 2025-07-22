@@ -88,6 +88,9 @@ devDependencies:
   prettier:
     specifier: ^3.4.2
     version: 3.6.2
+  run-script-webpack-plugin:
+    specifier: ^0.2.3
+    version: 0.2.3
   source-map-support:
     specifier: ^0.5.21
     version: 0.5.21
@@ -112,6 +115,12 @@ devDependencies:
   typescript-eslint:
     specifier: ^8.20.0
     version: 8.37.0(eslint@9.31.0)(typescript@5.8.3)
+  webpack:
+    specifier: ^5.100.2
+    version: 5.100.2(@swc/core@1.13.1)
+  webpack-node-externals:
+    specifier: ^3.0.0
+    version: 3.0.0
 
 packages:
 
@@ -5489,6 +5498,11 @@ packages:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
     dependencies:
       queue-microtask: 1.2.3
+    dev: true
+
+  /run-script-webpack-plugin@0.2.3:
+    resolution: {integrity: sha512-GX1JqSNAmtGMAcE3iyLFlnxWpxKBWPNkpac/02w2RF3xynTjA8LWLkFzMzlvATA3c3kARWnT2OrsnvJviB79Lg==}
+    engines: {node: '>=14'}
     dev: true
 
   /rxjs@7.8.1:

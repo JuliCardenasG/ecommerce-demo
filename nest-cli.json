@@ -5,6 +5,7 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
+    "webpackConfigPath": "webpack-hmr.config.js",
     "tsConfigPath": "apps/ecommerce-demo/tsconfig.app.json"
   },
   "monorepo": true,

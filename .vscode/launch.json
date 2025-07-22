@@ -1,0 +1,45 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Invoice Service",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/nest",
+      "args": [
+        "build",
+        "invoice-service",
+        "--webpack",
+        "--webpackPath",
+        "webpack-hmr.config.js",
+        "--watch",
+        "--debug"
+      ],
+      "console": "integratedTerminal",
+      "restart": true,
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    {
+      "name": "Debug Order Service",
+      "type": "node", 
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/nest",
+      "args": [
+        "build",
+        "order-service", 
+        "--webpack",
+        "--webpackPath",
+        "webpack-hmr.config.js",
+        "--watch",
+        "--debug"
+      ],
+      "console": "integratedTerminal",
+      "restart": true,
+      "env": {
+        "NODE_ENV": "development"
+      }
+    }
+  ]
+}
