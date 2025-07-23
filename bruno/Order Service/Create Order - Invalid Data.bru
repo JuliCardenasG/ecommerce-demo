@@ -1,0 +1,32 @@
+meta {
+  name: Create Order - Invalid Data
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{orderServiceUrl}}/orders
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "price": -10,
+    "quantity": 0,
+    "productId": "",
+    "customerId": "",
+    "sellerId": ""
+  }
+}
+
+tests {
+  test("Status code is 400", function() {
+    expect(res.getStatus()).to.equal(400);
+  });
+
+  test("Response contains validation errors", function() {
+    const body = res.getBody();
+    expect(body.message).to.contain("validation");
+  });
+}

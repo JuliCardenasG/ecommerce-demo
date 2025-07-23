@@ -1,0 +1,40 @@
+meta {
+  name: Create Order
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{orderServiceUrl}}/orders
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "price": 29.99,
+    "quantity": 2,
+    "productId": "prod_123456789",
+    "customerId": "cust_987654321",
+    "sellerId": "seller_555666777"
+  }
+}
+
+tests {
+  test("Status code is 201", function() {
+    expect(res.getStatus()).to.equal(201);
+  });
+
+  test("Response contains message", function() {
+    expect(res.getBody().message).to.equal("Order created successfully");
+  });
+
+  test("Response contains order data", function() {
+    const data = res.getBody().data;
+    expect(data.price).to.equal(29.99);
+    expect(data.quantity).to.equal(2);
+    expect(data.productId).to.equal("prod_123456789");
+    expect(data.customerId).to.equal("cust_987654321");
+    expect(data.sellerId).to.equal("seller_555666777");
+  });
+}
