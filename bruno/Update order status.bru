@@ -1,0 +1,21 @@
+meta {
+  name: Update order status
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{orderServiceUrl}}/orders/6880fc7aebdb03316c11794c
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "status": "ACCEPTED"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

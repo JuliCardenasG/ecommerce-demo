@@ -17,7 +17,6 @@ export const createOrderDto = z.object({
 });
 
 export const updateOrderDto = z.object({
-  id: z.string().min(1, 'Order ID is required'),
   status: z
     .enum([
       OrderStatus.CREATED,

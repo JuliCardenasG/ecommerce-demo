@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { OrderServiceController } from './order-service.controller';
-import { OrderServiceService } from './order-service.service';
+import { OrderService } from './order-service.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { OrderRepository } from './repositories/order.repository';
+import { Order, OrderSchema } from './schemas/order.schema';
 
 @Module({
   imports: [
@@ -17,8 +19,9 @@ import { MongooseModule } from '@nestjs/mongoose';
       }),
       inject: [ConfigService],
     }),
+    MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }]),
   ],
   controllers: [OrderServiceController],
-  providers: [OrderServiceService],
+  providers: [OrderService, OrderRepository],
 })
 export class OrderServiceModule {}

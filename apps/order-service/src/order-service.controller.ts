@@ -1,25 +1,58 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
-import { OrderServiceService } from './order-service.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  HttpCode,
+  HttpStatus,
+  Put,
+} from '@nestjs/common';
+import { OrderService } from './order-service.service';
 import { ZodValidationPipe } from '@libs/validation';
-import { CreateOrderDto, createOrderDto } from './dto/order.dto';
+import {
+  CreateOrderDto,
+  createOrderDto,
+  UpdateOrderDto,
+  updateOrderDto,
+} from './dto/order.dto';
 
 @Controller('orders')
 export class OrderServiceController {
-  constructor(private readonly orderServiceService: OrderServiceService) {}
+  constructor(private readonly orderService: OrderService) {}
+
+  @Get(':id')
+  async getOrderById(@Param('id') id: string) {
+    const order = await this.orderService.findOrderById(id);
+    return { data: order };
+  }
 
   @Get()
-  getHello(): string {
-    return this.orderServiceService.getHello();
+  async getAllOrders() {
+    const orders = await this.orderService.findAllOrders();
+    return { data: orders };
   }
 
   @Post()
-  createOrder(
+  @HttpCode(HttpStatus.CREATED)
+  async createOrder(
     @Body(new ZodValidationPipe(createOrderDto))
     createOrderDto: CreateOrderDto,
   ) {
-    return {
-      message: 'Order created successfully',
-      data: createOrderDto,
-    };
+    const createdOrder = await this.orderService.createOrder(createOrderDto);
+
+    return { data: createdOrder };
+  }
+
+  @Put(':id')
+  async updateOrder(
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(updateOrderDto)) updateOrderDto: UpdateOrderDto,
+  ) {
+    const updatedOrder = await this.orderService.updateOrder(
+      id,
+      updateOrderDto,
+    );
+    return { data: updatedOrder };
   }
 }

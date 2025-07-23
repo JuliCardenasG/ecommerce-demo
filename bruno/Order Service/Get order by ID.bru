@@ -1,0 +1,15 @@
+meta {
+  name: Get order by ID
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{orderServiceUrl}}/orders/id
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,22 +1,17 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-
-export enum OrderStatus {
-  CREATED,
-  ACCEPTED,
-  REJECTED,
-  SHIPPING,
-  SHIPPED,
-}
+import { OrderStatus } from '../dto/order.dto';
 
 export type OrderDocument = Order & Document;
 
 @Schema()
 export class Order {
-  @Prop({ required: true, unique: true })
-  id: string;
-
-  @Prop({ required: true, default: OrderStatus.CREATED, enum: OrderStatus })
+  @Prop({
+    required: true,
+    default: OrderStatus.CREATED,
+    enum: OrderStatus,
+    type: String,
+  })
   status: OrderStatus;
 
   @Prop({ required: true })
@@ -34,3 +29,5 @@ export class Order {
   @Prop({ required: true })
   sellerId: string;
 }
+
+export const OrderSchema = SchemaFactory.createForClass(Order);
