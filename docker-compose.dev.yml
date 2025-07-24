@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   order-service:
     build:
@@ -21,6 +19,10 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+      - invoice-uploads:/app/uploads/invoices
     environment:
       - NODE_ENV=development
     command: pnpm run start:invoice:hot
+
+volumes:
+  invoice-uploads:

@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { InvoiceServiceController } from './invoice-service.controller';
-import { InvoiceServiceService } from './invoice-service.service';
+import { InvoiceService } from './invoice-service.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Invoice, InvoiceSchema } from './schemas/invoice.schema';
+import { InvoiceRepository } from './repositories/invoice.repository';
 
 @Module({
   imports: [
@@ -17,8 +19,9 @@ import { MongooseModule } from '@nestjs/mongoose';
       }),
       inject: [ConfigService],
     }),
+    MongooseModule.forFeature([{ name: Invoice.name, schema: InvoiceSchema }]),
   ],
   controllers: [InvoiceServiceController],
-  providers: [InvoiceServiceService],
+  providers: [InvoiceService, InvoiceRepository],
 })
 export class InvoiceServiceModule {}

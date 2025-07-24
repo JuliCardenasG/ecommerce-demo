@@ -1,0 +1,17 @@
+meta {
+  name: Upload Invoice
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{invoiceServiceUrl}}
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  orderId: 6880fc7aebdb03316c11794c
+  sellerId: seller_555666777
+  file: @file(/path/to/your/invoice.pdf)
+}
