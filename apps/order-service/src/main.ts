@@ -17,11 +17,9 @@ async function bootstrap() {
   await app.startAllMicroservices();
   await app.listen(process.env.port ?? 3000);
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   if (module.hot) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     module.hot.accept();
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+
     module.hot.dispose(() => app.close());
   }
 }

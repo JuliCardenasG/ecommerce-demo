@@ -20,8 +20,18 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "paths": {
-      "@libs/validation": ["libs/validation/src"],
-      "@libs/validation/*": ["libs/validation/src/*"]
+      "@libs/validation": [
+        "libs/validation/src"
+      ],
+      "@libs/validation/*": [
+        "libs/validation/src/*"
+      ],
+      "@libs/kafka": [
+        "libs/kafka/src"
+      ],
+      "@libs/kafka/*": [
+        "libs/kafka/src/*"
+      ]
     }
   }
 }

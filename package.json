@@ -89,7 +89,11 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^lib/kafka(|/.*)$": "<rootDir>/libs/kafka/src/$1"
+    }
   }
 }

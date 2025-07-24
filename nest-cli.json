@@ -17,6 +17,15 @@
         "tsConfigPath": "apps/invoice-service/tsconfig.app.json"
       }
     },
+    "kafka": {
+      "type": "library",
+      "root": "libs/kafka",
+      "entryFile": "index",
+      "sourceRoot": "libs/kafka/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/kafka/tsconfig.lib.json"
+      }
+    },
     "order-service": {
       "type": "application",
       "root": "apps/order-service",

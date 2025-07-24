@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { OrderRepository } from './repositories/order.repository';
 import { Order, OrderSchema } from './schemas/order.schema';
+import { KafkaModule } from '@libs/kafka';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { Order, OrderSchema } from './schemas/order.schema';
       inject: [ConfigService],
     }),
     MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }]),
+    KafkaModule.register('order-service-group'),
   ],
   controllers: [OrderServiceController],
   providers: [OrderService, OrderRepository],

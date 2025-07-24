@@ -21,6 +21,18 @@ import {
 export class OrderServiceController {
   constructor(private readonly orderService: OrderService) {}
 
+  @Get('test-kafka')
+  async testKafkaPublish() {
+    const result = await this.orderService.testKafkaPublish();
+    return { data: result };
+  }
+
+  @Get('test-kafka-subscription')
+  async testKafkaSubscription() {
+    const result = await this.orderService.testKafkaSubscription();
+    return { data: result };
+  }
+
   @Get(':id')
   async getOrderById(@Param('id') id: string) {
     const order = await this.orderService.findOrderById(id);
