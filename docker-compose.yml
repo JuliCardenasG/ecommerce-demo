@@ -30,6 +30,22 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./apps/api-gateway/Dockerfile
+    container_name: api-gateway
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - order-service
+      - invoice-service
+    environment:
+      - ORDER_SERVICE_URL=http://order-service:3000
+      - INVOICE_SERVICE_URL=http://invoice-service:3000
+
   order-service:
     build:
       context: .

@@ -1,4 +1,18 @@
 services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./apps/api-gateway/Dockerfile.dev
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - ORDER_SERVICE_URL=http://order-service:3000
+      - INVOICE_SERVICE_URL=http://invoice-service:3000
+    command: pnpm run start:gateway:hot
+
   order-service:
     build:
       context: .

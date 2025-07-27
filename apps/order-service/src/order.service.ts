@@ -52,11 +52,6 @@ export class OrderService {
     }
   }
 
-  async handleInvoiceSent(): Promise<void> {
-    // Logic to handle invoice sent event (just for showcase)
-    await Promise.resolve();
-  }
-
   private publishSendInvoiceEvent(invoiceId: string, orderId: string) {
     const payload = {
       invoiceId,

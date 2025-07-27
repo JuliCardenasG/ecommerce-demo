@@ -22,9 +22,18 @@ import {
   OrderInvoiceEvents,
 } from '@libs/kafka/interfaces/order-invoice.interface';
 
-@Controller('orders')
+@Controller('')
 export class OrderServiceController {
   constructor(private readonly orderService: OrderService) {}
+
+  @Get('/health')
+  getHealth() {
+    return {
+      status: 'healthy',
+      service: 'order-service',
+      timestamp: new Date().toISOString(),
+    };
+  }
 
   @Get(':id')
   async getOrderById(@Param('id') id: string) {
@@ -64,10 +73,5 @@ export class OrderServiceController {
   @MessagePattern(OrderInvoiceEvents.INVOICE_UPLOADED)
   async handleInvoiceUploaded(@Payload() data: InvoiceUploadedPayload) {
     await this.orderService.handleInvoiceUploaded(data.invoiceId, data.orderId);
-  }
-
-  @MessagePattern(OrderInvoiceEvents.INVOICE_SENT)
-  handleInvoiceSent() {
-    this.orderService.handleInvoiceSent();
   }
 }

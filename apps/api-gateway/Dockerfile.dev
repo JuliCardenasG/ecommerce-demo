@@ -1,0 +1,15 @@
+# ---- Base ----
+FROM node:20-alpine AS base
+WORKDIR /usr/src/app
+RUN npm install -g pnpm
+
+# ---- Dependencies ----
+FROM base AS dependencies
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install
+
+# ---- Development ----
+FROM base AS development
+COPY . .
+COPY --from=dependencies /usr/src/app/node_modules ./node_modules
+EXPOSE 3000

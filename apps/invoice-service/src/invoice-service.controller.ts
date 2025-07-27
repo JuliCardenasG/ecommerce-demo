@@ -23,6 +23,15 @@ import {
 export class InvoiceServiceController {
   constructor(private readonly invoiceService: InvoiceService) {}
 
+  @Get('/health')
+  getHealth() {
+    return {
+      status: 'healthy',
+      service: 'invoice-service',
+      timestamp: new Date().toISOString(),
+    };
+  }
+
   @Post('/')
   @UseInterceptors(FileInterceptor('file'))
   async uploadInvoice(

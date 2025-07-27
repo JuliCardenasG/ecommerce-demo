@@ -8,6 +8,15 @@
     "webpackConfigPath": "webpack-hmr.config.js"
   },
   "projects": {
+    "api-gateway": {
+      "type": "application",
+      "root": "apps/api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+      }
+    },
     "invoice-service": {
       "type": "application",
       "root": "apps/invoice-service",

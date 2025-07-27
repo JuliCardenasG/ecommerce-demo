@@ -15,6 +15,10 @@ case "$1" in
     echo "Starting order service locally with hot reload..."
     pnpm run start:order:hot
     ;;
+  "gateway")
+    echo "Starting API gateway locally with hot reload..."
+    pnpm run start:gateway:hot
+    ;;
   "stop")
     echo "Stopping all services..."
     docker-compose -f docker-compose.yml -f docker-compose.dev.yml down
@@ -29,19 +33,20 @@ case "$1" in
     fi
     ;;
   *)
-    echo "Usage: $0 {start|invoice|order|stop|logs [service-name]}"
+    echo "Usage: $0 {start|invoice|order|gateway|stop|logs [service-name]}"
     echo ""
     echo "Commands:"
     echo "  start    - Start all services with hot reload in Docker"
     echo "  invoice  - Start invoice service locally with hot reload"
     echo "  order    - Start order service locally with hot reload"
+    echo "  gateway  - Start API gateway locally with hot reload"
     echo "  stop     - Stop all Docker services"
     echo "  logs     - Show logs (optionally for specific service)"
     echo ""
     echo "Examples:"
     echo "  ./dev.sh start"
-    echo "  ./dev.sh invoice"
-    echo "  ./dev.sh logs invoice-service"
+    echo "  ./dev.sh gateway"
+    echo "  ./dev.sh logs api-gateway"
     exit 1
     ;;
 esac

@@ -1,0 +1,33 @@
+meta {
+  name: Create Order via Gateway
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{gatewayUrl}}/orders
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "price": 99.99,
+    "quantity": 1,
+    "productId": "prod_gateway_test",
+    "customerId": "cust_gateway_test",
+    "sellerId": "seller_gateway_test"
+  }
+}
+
+tests {
+  test("Status code is 201", function() {
+    expect(res.getStatus()).to.equal(201);
+  });
+
+  test("Response contains order data", function() {
+    const data = res.getBody().data;
+    expect(data.price).to.equal(99.99);
+    expect(data.productId).to.equal("prod_gateway_test");
+  });
+}

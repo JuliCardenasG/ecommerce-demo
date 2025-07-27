@@ -1,0 +1,21 @@
+meta {
+  name: List Orders via Gateway
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{gatewayUrl}}/orders
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status code is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Response contains data array", function() {
+    expect(res.getBody().data).to.be.an("array");
+  });
+}
