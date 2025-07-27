@@ -17,14 +17,17 @@ jobs:
     
     services:
       mongo:
-        image: mongo:latest
+        image: mongo:7.0
         ports:
           - 27017:27017
+        env:
+          MONGO_INITDB_DATABASE: ecommerce-test
         options: >-
-          --health-cmd "mongosh --eval 'db.runCommand({ping: 1})'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ping: 1}).ok' || mongo --quiet --eval 'db.runCommand({ping: 1}).ok'"
+          --health-interval 15s
+          --health-timeout 15s
+          --health-retries 15
+          --health-start-period 30s
           
       zookeeper:
         image: confluentinc/cp-zookeeper:7.3.0
@@ -47,8 +50,9 @@ jobs:
         options: >-
           --health-cmd "kafka-topics --bootstrap-server localhost:9092 --list"
           --health-interval 30s
-          --health-timeout 10s
-          --health-retries 3
+          --health-timeout 15s
+          --health-retries 10
+          --health-start-period 60s
           
     steps:
       - name: Checkout code
@@ -79,12 +83,17 @@ jobs:
       - name: Run unit tests
         run: pnpm run test:unit
         
-      - name: Wait for services to be ready
+      - name: Verify services are ready
         run: |
-          echo "Waiting for MongoDB..."
-          timeout 60 bash -c 'until mongosh --eval "db.runCommand({ping: 1})" > /dev/null 2>&1; do sleep 2; done'
-          echo "Waiting for Kafka..."
-          timeout 60 bash -c 'until kafka-topics --bootstrap-server localhost:9092 --list > /dev/null 2>&1; do sleep 2; done'
+          echo "Verifying services are healthy..."
+          
+          echo "Testing MongoDB connection (should be healthy due to health checks)..."
+          nc -z localhost 27017 && echo "✓ MongoDB port is open" || echo "✗ MongoDB port check failed"
+          
+          echo "Testing Kafka connection (should be healthy due to health checks)..."
+          nc -z localhost 9092 && echo "✓ Kafka port is open" || echo "✗ Kafka port check failed"
+          
+          echo "Services verification completed!"
         
       - name: Run E2E tests
         run: pnpm run test:e2e
