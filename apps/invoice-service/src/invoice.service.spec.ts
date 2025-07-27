@@ -5,7 +5,10 @@ import { UploadInvoiceDto } from './dto/invoice.dto';
 import { OrderInvoiceEvents } from '@libs/kafka/interfaces/order-invoice.interface';
 import * as fs from 'fs/promises';
 
-jest.mock('fs/promises');
+jest.mock('fs/promises', () => ({
+  mkdir: jest.fn(),
+  writeFile: jest.fn(),
+}));
 
 describe('InvoiceService', () => {
   let service: InvoiceService;
@@ -47,8 +50,9 @@ describe('InvoiceService', () => {
 
     service = module.get<InvoiceService>(InvoiceService);
 
-    (fs.mkdir as jest.Mock).mockResolvedValue(undefined);
-    (fs.writeFile as jest.Mock).mockResolvedValue(undefined);
+    const mockedFs = fs as jest.Mocked<typeof fs>;
+    mockedFs.mkdir.mockResolvedValue(undefined);
+    mockedFs.writeFile.mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -69,15 +73,16 @@ describe('InvoiceService', () => {
     };
 
     it('should upload invoice successfully', async () => {
+      const mockedFs = fs as jest.Mocked<typeof fs>;
       mockInvoiceRepository.create.mockResolvedValue(mockInvoice);
 
       const result = await service.uploadInvoice(uploadDto, mockFile);
 
-      expect(fs.mkdir).toHaveBeenCalledWith(
+      expect(mockedFs.mkdir).toHaveBeenCalledWith(
         '/app/uploads/invoices/seller_123/order_123',
         { recursive: true },
       );
-      expect(fs.writeFile).toHaveBeenCalledWith(
+      expect(mockedFs.writeFile).toHaveBeenCalledWith(
         expect.stringContaining('/app/uploads/invoices/seller_123/order_123/'),
         mockFile.buffer,
       );
@@ -100,7 +105,8 @@ describe('InvoiceService', () => {
     });
 
     it('should throw error if upload fails', async () => {
-      (fs.mkdir as jest.Mock).mockRejectedValue(new Error('File system error'));
+      const mockedFs = fs as jest.Mocked<typeof fs>;
+      mockedFs.mkdir.mockRejectedValueOnce(new Error('File system error'));
 
       await expect(service.uploadInvoice(uploadDto, mockFile)).rejects.toThrow(
         'Invoice upload failed',
