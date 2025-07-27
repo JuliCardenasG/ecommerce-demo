@@ -17,7 +17,7 @@ RUN pnpm run build order-service
 # ---- Release ----
 FROM base AS release
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --prod
+RUN pnpm install --prod --ignore-scripts
 COPY --from=build /usr/src/app/dist ./dist
 
 EXPOSE 3000
