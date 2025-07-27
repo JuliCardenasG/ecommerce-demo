@@ -1,0 +1,15 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "..",
+  "testEnvironment": "node",
+  "testRegex": "apps/.*/test/.*\\.e2e-spec\\.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@libs/kafka/(.*)$": "<rootDir>/libs/kafka/src/$1",
+    "^@libs/validation/(.*)$": "<rootDir>/libs/validation/src/$1",
+    "^@libs/(.*)$": "<rootDir>/libs/$1/src"
+  },
+  "setupFilesAfterEnv": ["<rootDir>/test/setup.ts"]
+}
