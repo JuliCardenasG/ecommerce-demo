@@ -15,6 +15,7 @@ export class Invoice {
   @Prop({ required: true })
   uploadedAt: Date;
 
+  @Prop()
   sentAt: Date;
 }
 export const InvoiceSchema = SchemaFactory.createForClass(Invoice);

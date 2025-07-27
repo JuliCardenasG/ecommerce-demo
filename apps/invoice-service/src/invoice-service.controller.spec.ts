@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { InvoiceServiceController } from './invoice-service.controller';
-import { InvoiceService } from './invoice-service.service';
+import { InvoiceService } from './invoice.service';
 
 describe('InvoiceServiceController', () => {
   let invoiceServiceController: InvoiceServiceController;
@@ -17,8 +17,8 @@ describe('InvoiceServiceController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(invoiceServiceController.getHello()).toBe('Hello World!');
+    it('should be defined', () => {
+      expect(invoiceServiceController).toBeDefined();
     });
   });
 });

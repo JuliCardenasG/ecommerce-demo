@@ -8,7 +8,8 @@ import {
   HttpStatus,
   Put,
 } from '@nestjs/common';
-import { OrderService } from './order-service.service';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { OrderService } from './order.service';
 import { ZodValidationPipe } from '@libs/validation';
 import {
   CreateOrderDto,
@@ -16,22 +17,14 @@ import {
   UpdateOrderDto,
   updateOrderDto,
 } from './dto/order.dto';
+import {
+  InvoiceUploadedPayload,
+  OrderInvoiceEvents,
+} from '@libs/kafka/interfaces/order-invoice.interface';
 
 @Controller('orders')
 export class OrderServiceController {
   constructor(private readonly orderService: OrderService) {}
-
-  @Get('test-kafka')
-  async testKafkaPublish() {
-    const result = await this.orderService.testKafkaPublish();
-    return { data: result };
-  }
-
-  @Get('test-kafka-subscription')
-  async testKafkaSubscription() {
-    const result = await this.orderService.testKafkaSubscription();
-    return { data: result };
-  }
 
   @Get(':id')
   async getOrderById(@Param('id') id: string) {
@@ -66,5 +59,15 @@ export class OrderServiceController {
       updateOrderDto,
     );
     return { data: updatedOrder };
+  }
+
+  @MessagePattern(OrderInvoiceEvents.INVOICE_UPLOADED)
+  async handleInvoiceUploaded(@Payload() data: InvoiceUploadedPayload) {
+    await this.orderService.handleInvoiceUploaded(data.invoiceId, data.orderId);
+  }
+
+  @MessagePattern(OrderInvoiceEvents.INVOICE_SENT)
+  handleInvoiceSent() {
+    this.orderService.handleInvoiceSent();
   }
 }

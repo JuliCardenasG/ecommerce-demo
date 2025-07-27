@@ -13,7 +13,7 @@ async function bootstrap() {
         brokers: ['kafka:29092'],
       },
       consumer: {
-        groupId: 'invoice-consumer',
+        groupId: 'invoice-service-group',
       },
     },
   });

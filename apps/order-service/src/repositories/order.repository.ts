@@ -9,7 +9,7 @@ export class OrderRepository {
     @InjectModel(Order.name) private orderModel: Model<OrderDocument>,
   ) {}
 
-  async createOrder(orderData: Partial<Order>): Promise<Order> {
+  async createOrder(orderData: Partial<Order>): Promise<OrderDocument> {
     const createdOrder = new this.orderModel(orderData);
     return createdOrder.save();
   }

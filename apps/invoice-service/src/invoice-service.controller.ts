@@ -7,10 +7,17 @@ import {
   BadRequestException,
   ParseFilePipeBuilder,
   HttpStatus,
+  Param,
+  Get,
 } from '@nestjs/common';
-import { InvoiceService } from './invoice-service.service';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { InvoiceService } from './invoice.service';
 import { UploadInvoiceDto } from './dto/invoice.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  InvoiceSendPayload,
+  OrderInvoiceEvents,
+} from '@libs/kafka/interfaces/order-invoice.interface';
 
 @Controller()
 export class InvoiceServiceController {
@@ -53,5 +60,15 @@ export class InvoiceServiceController {
         `Failed to upload invoice: ${error.message}`,
       );
     }
+  }
+
+  @Get('/:invoiceId')
+  async findInvoiceById(@Param('invoiceId') id: string) {
+    return this.invoiceService.findInvoiceById(id);
+  }
+
+  @MessagePattern(OrderInvoiceEvents.INVOICE_SEND)
+  async handleInvoiceSend(@Payload() data: InvoiceSendPayload) {
+    await this.invoiceService.sendInvoice(data.invoiceId, data.orderId);
   }
 }

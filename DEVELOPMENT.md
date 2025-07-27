@@ -2,6 +2,21 @@
 
 This project is now configured with Nest.js webpack HMR (Hot Module Replacement) for efficient development with instant code reloading.
 
+## Architecture Overview
+
+The project uses **pure NestJS microservices pattern** with Kafka for event communication:
+
+- **Order Service**: Handles order management and publishes order events
+- **Invoice Service**: Handles invoice processing and responds to order events  
+- **Kafka Integration**: Uses NestJS built-in microservice patterns with `@MessagePattern` decorators
+- **Consumer Groups**: Each service uses independent consumer groups for proper event delivery
+
+### Event Flow
+```
+Order Service -> Kafka (ORDER_CREATED) -> Order Service handlers
+Order Service -> Kafka (INVOICE_SEND) -> Invoice Service handlers  
+Invoice Service -> Kafka (INVOICE_UPLOADED, INVOICE_SENT) -> Order Service handlers
+```
 
 ## Development Commands
 
@@ -47,6 +62,32 @@ pnpm run start:order:dev
 2. **File Watching**: Monitors TypeScript files for changes
 3. **Instant Compilation**: Recompiles only changed modules
 4. **State Preservation**: Maintains microservice connections and application state
+5. **Kafka Consumer Groups**: Each service uses independent consumer groups (`order-service-group`, `invoice-service-group`) ensuring both services receive events
+
+## Microservice Event Patterns
+
+### Message Patterns
+Services use `@MessagePattern()` decorators to handle specific events:
+
+```typescript
+@MessagePattern('INVOICE_SEND')
+async handleInvoiceSend(@Payload() data: InvoiceSendPayload) {
+  await this.invoiceService.sendInvoice(data.invoiceId, data.orderId);
+}
+```
+
+### Event Publishing
+Services use `ClientProxy.emit()` for publishing events:
+
+```typescript
+this.kafkaClient.emit(OrderInvoiceEvents.ORDER_CREATED, payload);
+```
+
+### Consumer Groups
+- **Order Service**: `order-service-group` 
+- **Invoice Service**: `invoice-service-group`
+
+This ensures both services receive the same events independently.
 
 ## Development Workflow
 

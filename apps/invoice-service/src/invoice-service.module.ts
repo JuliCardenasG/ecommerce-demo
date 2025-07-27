@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { InvoiceServiceController } from './invoice-service.controller';
-import { InvoiceService } from './invoice-service.service';
+import { InvoiceService } from './invoice.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Invoice, InvoiceSchema } from './schemas/invoice.schema';
 import { InvoiceRepository } from './repositories/invoice.repository';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -20,6 +21,17 @@ import { InvoiceRepository } from './repositories/invoice.repository';
       inject: [ConfigService],
     }),
     MongooseModule.forFeature([{ name: Invoice.name, schema: InvoiceSchema }]),
+    ClientsModule.register([
+      {
+        name: 'KAFKA_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            brokers: ['kafka:29092'],
+          },
+        },
+      },
+    ]),
   ],
   controllers: [InvoiceServiceController],
   providers: [InvoiceService, InvoiceRepository],

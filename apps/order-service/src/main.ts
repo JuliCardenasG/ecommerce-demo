@@ -12,6 +12,9 @@ async function bootstrap() {
       client: {
         brokers: ['kafka:29092'],
       },
+      consumer: {
+        groupId: 'order-service-group',
+      },
     },
   });
   await app.startAllMicroservices();
