@@ -1,11 +1,11 @@
 meta {
-  name: Update order status
+  name: Update order status via Gateway
   type: http
-  seq: 4
+  seq: 2
 }
 
 put {
-  url: {{orderServiceUrl}}/6880fc7aebdb03316c11794c
+  url: {{gatewayUrl}}/orders/688679cc15ea2e004c3a7096
   body: json
   auth: inherit
 }

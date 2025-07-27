@@ -76,6 +76,11 @@ export class InvoiceServiceController {
     return this.invoiceService.findInvoiceById(id);
   }
 
+  @Get('/order/:orderId')
+  async findInvoiceByOrderId(@Param('orderId') orderId: string) {
+    return this.invoiceService.findInvoiceByOrderId(orderId);
+  }
+
   @MessagePattern(OrderInvoiceEvents.INVOICE_SEND)
   async handleInvoiceSend(@Payload() data: InvoiceSendPayload) {
     await this.invoiceService.sendInvoice(data.invoiceId, data.orderId);

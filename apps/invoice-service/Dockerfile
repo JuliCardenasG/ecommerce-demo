@@ -1,7 +1,7 @@
 # ---- Base ----
 FROM node:20-alpine AS base
 WORKDIR /usr/src/app
-RUN npm install -g pnpm
+RUN npm install -g pnpm@8
 
 # ---- Dependencies ----
 FROM base AS dependencies
@@ -21,4 +21,4 @@ RUN pnpm install --prod
 COPY --from=build /usr/src/app/dist ./dist
 
 EXPOSE 3000
-CMD ["node", "dist/apps/invoice-service/main"]
+CMD ["node", "dist/apps/invoice-service/apps/invoice-service/src/main"]

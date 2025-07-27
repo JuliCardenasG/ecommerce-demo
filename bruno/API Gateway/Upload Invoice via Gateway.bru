@@ -1,11 +1,11 @@
 meta {
-  name: Upload Invoice
+  name: Upload Invoice via Gateway
   type: http
-  seq: 2
+  seq: 1
 }
 
 post {
-  url: {{invoiceServiceUrl}}/invoices
+  url: {{gatewayUrl}}/invoices
   body: multipartForm
   auth: none
 }

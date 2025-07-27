@@ -38,6 +38,23 @@ export class OrderService {
     return this.orderRepository.updateOrder(id, updateData);
   }
 
+  async updateOrderStatus(
+    id: string,
+    status: OrderStatus,
+  ): Promise<Order | null> {
+    const updatedOrder = await this.orderRepository.updateOrder(id, { status });
+
+    if (
+      updatedOrder &&
+      status === OrderStatus.SHIPPED &&
+      updatedOrder.invoiceId
+    ) {
+      this.publishSendInvoiceEvent(updatedOrder.invoiceId, id);
+    }
+
+    return updatedOrder;
+  }
+
   async handleInvoiceUploaded(
     invoiceId: string,
     orderId: string,
@@ -46,6 +63,9 @@ export class OrderService {
     if (!order) {
       throw new Error(`Order with ID ${orderId} not found`);
     }
+
+    await this.orderRepository.updateOrder(orderId, { invoiceId });
+
     console.log(`Handling invoice uploaded for order ${orderId}`);
     if (order.status === OrderStatus.SHIPPED) {
       this.publishSendInvoiceEvent(invoiceId, orderId);

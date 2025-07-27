@@ -3,9 +3,7 @@
   "collection": "@nestjs/schematics",
   "monorepo": true,
   "compilerOptions": {
-    "deleteOutDir": true,
-    "webpack": true,
-    "webpackConfigPath": "webpack-hmr.config.js"
+    "deleteOutDir": true
   },
   "projects": {
     "api-gateway": {

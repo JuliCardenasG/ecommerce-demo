@@ -28,6 +28,9 @@ export class Order {
 
   @Prop({ required: true })
   sellerId: string;
+
+  @Prop()
+  invoiceId: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

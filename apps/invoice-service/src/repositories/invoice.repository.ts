@@ -18,6 +18,10 @@ export class InvoiceRepository {
     return this.invoiceModel.findById(id).exec();
   }
 
+  async findByOrderId(orderId: string): Promise<InvoiceDocument | null> {
+    return this.invoiceModel.findOne({ orderId }).exec();
+  }
+
   async findAll(): Promise<InvoiceDocument[]> {
     return this.invoiceModel.find().exec();
   }

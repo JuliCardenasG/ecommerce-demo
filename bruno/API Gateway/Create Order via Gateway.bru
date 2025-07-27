@@ -1,7 +1,7 @@
 meta {
   name: Create Order via Gateway
   type: http
-  seq: 2
+  seq: 4
 }
 
 post {
@@ -24,7 +24,7 @@ tests {
   test("Status code is 201", function() {
     expect(res.getStatus()).to.equal(201);
   });
-
+  
   test("Response contains order data", function() {
     const data = res.getBody().data;
     expect(data.price).to.equal(99.99);

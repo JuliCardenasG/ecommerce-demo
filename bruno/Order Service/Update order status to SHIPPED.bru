@@ -1,21 +1,17 @@
 meta {
-  name: Update order status
+  name: Update order status to SHIPPED
   type: http
-  seq: 4
+  seq: 7
 }
 
 put {
   url: {{orderServiceUrl}}/6880fc7aebdb03316c11794c
   body: json
-  auth: inherit
+  auth: none
 }
 
 body:json {
   {
-    "status": "ACCEPTED"
+    "status": "SHIPPED"
   }
-}
-
-settings {
-  encodeUrl: true
 }

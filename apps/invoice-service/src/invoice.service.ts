@@ -62,6 +62,14 @@ export class InvoiceService {
     return invoice;
   }
 
+  async findInvoiceByOrderId(orderId: string) {
+    const invoice = await this.invoiceRepository.findByOrderId(orderId);
+    if (!invoice) {
+      throw new Error(`Invoice for order ${orderId} not found`);
+    }
+    return invoice;
+  }
+
   private async saveFileToStorage(
     file: Express.Multer.File,
     sellerId: string,

@@ -63,10 +63,17 @@ export class OrderServiceController {
     @Param('id') id: string,
     @Body(new ZodValidationPipe(updateOrderDto)) updateOrderDto: UpdateOrderDto,
   ) {
-    const updatedOrder = await this.orderService.updateOrder(
-      id,
-      updateOrderDto,
-    );
+    let updatedOrder;
+
+    if (updateOrderDto.status) {
+      updatedOrder = await this.orderService.updateOrderStatus(
+        id,
+        updateOrderDto.status,
+      );
+    } else {
+      updatedOrder = await this.orderService.updateOrder(id, updateOrderDto);
+    }
+
     return { data: updatedOrder };
   }
 

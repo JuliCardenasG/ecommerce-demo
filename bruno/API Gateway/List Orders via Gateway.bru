@@ -1,11 +1,11 @@
 meta {
   name: List Orders via Gateway
   type: http
-  seq: 3
+  seq: 5
 }
 
 get {
-  url: {{gatewayUrl}}/orders
+  url: {{gatewayUrl}}/orders/688679cc15ea2e004c3a7096
   body: none
   auth: none
 }
@@ -14,7 +14,7 @@ tests {
   test("Status code is 200", function() {
     expect(res.getStatus()).to.equal(200);
   });
-
+  
   test("Response contains data array", function() {
     expect(res.getBody().data).to.be.an("array");
   });
